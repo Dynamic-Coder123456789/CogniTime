@@ -1,0 +1,408 @@
+<!-- created by vedant wankhede || april 2025 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- meta tags for responsive layout and character encoding -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- page title -->
+  <title>CogniTime</title>
+
+  <!-- lucide icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- styles -->
+  <style>
+
+    :root {
+      --primary: #a855f7;
+      --background: #faf5ff;
+      --text-dark: #1e1b4b;
+      --primary-dark: #9333ea;
+      --text-muted: #7c3aed;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: white;
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3 {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-size: 3rem;
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.125rem;
+      color: var(--text-muted);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 1rem 2rem;
+      background: var(--background);
+      color: var(--primary-dark);
+    }
+
+    header .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+
+    header nav {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      font-weight: 500;
+    }
+
+    header a {
+      color: var(--primary-dark);
+      text-decoration: none;
+    }
+
+    main {
+      width: 100%;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .hero {
+      position: relative;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 1rem;
+      min-height: 100vh;
+      color: white;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('CogniTime_bg.png') no-repeat center center / cover;
+      opacity: 0.4;
+      z-index: 0;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(40, 0, 60, 0.7), rgba(80, 0, 110, 0.9));
+      z-index: 1;
+    }
+
+    .hero .container {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 span {
+      color: #e9d5ff;
+    }
+
+    .hero-text {
+      margin-bottom: 2rem;
+      color: #ede9fe;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.85rem 1.75rem;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 0.6rem;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      box-shadow: 0 6px 15px rgba(168, 85, 247, 0.2);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      transform: scale(1.03);
+    }
+
+    .features,
+    .stats,
+    .focus-score,
+    .cta {
+      padding: 5rem 0;
+    }
+
+    .features-grid,
+    .stats-grid {
+      display: grid;
+      gap: 2.5rem;
+      margin-top: 3rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .feature-card {
+      background: var(--background);
+      padding: 2rem;
+      text-align: center;
+      border-radius: 1rem;
+      transition: transform 0.2s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-icon {
+      margin-bottom: 1rem;
+      color: var(--primary-dark);
+    }
+
+    .stats {
+      background-color: #f3e8ff;
+    }
+
+    .stat-number {
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .focus-score {
+      background: white;
+    }
+
+    .focus-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      font-size: 1rem;
+    }
+
+    .score-card {
+      background: var(--background);
+      padding: 2rem;
+      border-radius: 1rem;
+    }
+
+    .score-display {
+      background: white;
+      text-align: center;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .score-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .progress-bar {
+      height: 0.5rem;
+      margin-top: 1rem;
+      border-radius: 999px;
+      background-color: #e9d5ff;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 87%;
+      height: 100%;
+      background-color: var(--primary-dark);
+      transition: width 0.5s ease-in-out;
+    }
+
+    .cta {
+      background-color: var(--primary-dark);
+      color: white;
+      text-align: center;
+    }
+
+    .cta p {
+      color: #ede9fe;
+      margin: 1rem 0 2rem;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.25rem;
+      }
+
+      .focus-content {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-card {
+        padding: 1.5rem;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      header nav {
+        margin-top: 0.5rem;
+        gap: 1rem;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">CogniTime</div>
+    <nav>
+      <a href="#benefits">Benefits</a>
+      <a href="#need">Results</a>
+      <a href="#importance"> Personalized Focus Score</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <div class="container">
+        <i data-lucide="timer" class="hero-icon" width="64" height="64"></i>
+        <h1>Focus that adapts to <span>you</span></h1>
+        <p class="hero-text">
+          CogniTime - A personalized Pomodoro timer that understands your rhythm and helps you achieve peak productivity with psychological insights.
+        </p>
+        <a href="http://localhost:63342/CogniTime/learn.html?_ijt=8bo1mne5ipkvv5f337go9acm5j&_ij_reload=RELOAD_ON_SAVE" target="_blank" class="btn btn-primary">
+          Start Your Focus Journey
+        </a>
+      </div>
+    </section>
+
+    <section class="features" id="benefits">
+      <div class="container">
+        <h2 class="text-center">Designed for Deep Focus</h2>
+        <div class="features-grid">
+
+          <div class="feature-card">
+            <i data-lucide="brain" class="feature-icon" width="48" height="48"></i>
+            <h3>Psychological Insights</h3>
+            <p>Understand your focus patterns and optimize your productivity cycles.</p>
+          </div>
+          <div class="feature-card">
+            <i data-lucide="check-circle" class="feature-icon" width="48" height="48"></i>
+            <h3>Single Task Focus</h3>
+            <p>Stay on track with one clear objective at a time—no tabs, no juggling.</p>
+          </div>
+          <div class="feature-card">
+            <i data-lucide="target" class="feature-icon" width="48" height="48"></i>
+            <h3>Personalized Focus Score</h3>
+            <p>Track your progress with a unique score tailored to your work style.</p>
+          </div>
+          <div class="feature-card">
+            <i data-lucide="users" class="feature-icon" width="48" height="48"></i>
+            <h3>Role-Optimized</h3>
+            <p>Customized settings for students, professionals, and creatives.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats" id="need">
+      <div class="container">
+        <div class="stats-grid">
+          <div><div class="stat-number">25%</div><p>Increase in Focus</p></div>
+          <div><div class="stat-number">50%</div><p>Increase in Productivity Length</p></div>
+          <div><div class="stat-number">20%</div><p>Increase in Quality</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="focus-score" id="importance">
+      <div class="container">
+        <div class="focus-content">
+          <div>
+            <h2>Your Personal Focus Score</h2>
+            <p>CogniTime's innovative scoring system analyzes your focus patterns, break efficiency, and task completion rates to generate a personalized focus score.</p>
+            <div class="feature-item">
+              <i data-lucide="bar-chart" width="24" height="24"></i>
+              <span>Real-time performance tracking</span>
+            </div>
+            <div class="feature-item">
+              <i data-lucide="sparkles" width="24" height="24"></i>
+              <span>Personalized improvement suggestions</span>
+            </div>
+          </div>
+          <div class="score-card">
+            <div class="score-display">
+              <div class="score-number">87</div>
+              <p>Your current focus score</p>
+              <div class="progress-bar"><div class="progress-fill"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <h2>Boost Your Productivity</h2>
+        <p>Level up your focus, one Task at a time.</p>
+        <a href="http://localhost:63342/CogniTime/learn.html?_ijt=8bo1mne5ipkvv5f337go9acm5j&_ij_reload=RELOAD_ON_SAVE" target="_blank" class="btn btn-primary">Get Started</a>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>

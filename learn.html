@@ -1,0 +1,257 @@
+<!-- Created by Vedant Wankhede | Last updated: April 2025 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CogniTime</title>
+
+  <!-- tailwind and lucide react -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* animations */
+    @keyframes appearSmoothly {
+      0% {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-effect {
+      animation: appearSmoothly 1s ease-out forwards;
+    }
+  </style>
+</head>
+
+<body id="appRoot" class="min-h-screen text-gray-800 bg-gradient-to-br from-purple-100 to-purple-300 transition-all ease-in-out duration-700">
+
+  <section id="introWrap" class="h-screen flex items-center justify-center px-4 bg-gradient-to-br from-purple-300 to-purple-100 transition-all ease-in-out duration-700">
+    <div class="w-full max-w-xl p-10 bg-white/90 backdrop-blur-sm rounded-3xl border border-purple-200 shadow-2xl fade-effect transition-all transform duration-700 hover:scale-105 hover:shadow-3xl">
+      <h1 class="text-5xl font-extrabold text-purple-800 mb-4 tracking-tight">Single Focus 🧠 Productivity</h1>
+      <p class="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed">
+        Stay focused, eliminate distractions, and get things done one task at a time with CogniTime.
+      </p>
+
+      <button onclick="lnch()" class="px-8 py-3 text-white bg-purple-700 text-lg rounded-full shadow-lg hover:bg-purple-800 hover:scale-105 transition-all transform duration-500">
+        Start
+      </button>
+    </div>
+  </section>
+
+  <div id="mainInterface" class="hidden w-full max-w-2xl mx-auto mt-10 mb-10 bg-white/90 backdrop-blur-sm rounded-3xl p-8 border border-purple-200 shadow-2xl fade-effect">
+
+    <h1 class="text-4xl font-extrabold mb-4 tracking-tight text-center text-purple-800">🎯 Your Productivity Hub</h1>
+
+    <!-- purpose selection -->
+    <div id="categorySelection" class="text-center space-y-4">
+      <p class="text-lg text-gray-700">Welcome to your focused productivity tool. Enter your most important tasks and start working with intention — one task at a time.</p>
+
+      <div class="mt-4 text-left">
+        <label class="block mb-4 font-semibold text-lg">What's your main purpose?</label>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- default -->
+          <div onclick="set_prp('default')" class="cursor-pointer bg-white border border-gray-300 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-purple-500 transition text-center">
+            <div class="flex justify-center mb-2"><i data-lucide="target" class="w-8 h-8 text-purple-600"></i></div>
+            <div class="font-semibold">General</div>
+          </div>
+
+          <!-- students -->
+          <div onclick="set_prp('student')" class="cursor-pointer bg-white border border-gray-300 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-purple-500 transition text-center">
+            <div class="flex justify-center mb-2"><i data-lucide="book-open" class="w-8 h-8 text-purple-600"></i></div>
+            <div class="font-semibold">Student</div>
+          </div>
+
+          <!-- office workers -->
+          <div onclick="set_prp('office')" class="cursor-pointer bg-white border border-gray-300 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-purple-500 transition text-center">
+            <div class="flex justify-center mb-2"><i data-lucide="briefcase" class="w-8 h-8 text-purple-600"></i></div>
+            <div class="font-semibold">Office Work</div>
+          </div>
+
+          <!-- innovator -->
+          <div onclick="set_prp('entrepreneur')" class="cursor-pointer bg-white border border-gray-300 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-purple-500 transition text-center">
+            <div class="flex justify-center mb-2"><i data-lucide="rocket" class="w-8 h-8 text-purple-600"></i></div>
+            <div class="font-semibold">Entrepreneur</div>
+          </div>
+        </div>
+      </div>
+
+      <input type="hidden" id="purposeTracker" value="default" />
+    </div>
+
+    <!-- tasks field-->
+    <div id="taskEditor" class="hidden mt-6 space-y-4 fade-effect">
+      <div class="text-left">
+        <label class="block mb-2 font-semibold">Enter Tasks with Duration (e.g., Study - 2h, Sleep - 30m):</label>
+        <textarea id="taskBlock" rows="6" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-purple-300 transition" placeholder="Format: Task - Duration&#10;Example:&#10;Study - 2h&#10;Sleep - 30m&#10;Cook - 1.5h"></textarea>
+      </div>
+
+      <!-- break controled by user -->
+      <div class="mt-4">
+        <label class="block mb-2 font-semibold">Break Duration (minutes):</label>
+        <input type="number" id="breakInput" value="5" min="1" class="w-24 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-300" />
+      </div>
+
+      <button onclick="go()" class="px-6 py-2 bg-blue-600 text-white rounded-full shadow hover:bg-blue-700 hover:scale-105 transform transition-all duration-500">
+        Start Session
+      </button>
+    </div>
+
+    <div id="activeSession" class="hidden text-center mt-8 fade-effect">
+      <h2 class="text-2xl font-semibold mb-3 text-purple-700">Current Task:</h2>
+      <p id="taskNow" class="text-xl font-medium mb-4 text-purple-800"></p>
+
+      <div class="flex flex-col items-center">
+        <div class="text-6xl font-extrabold text-blue-700" id="clockDisplay">00:00</div>
+        <p class="mt-2 text-lg text-gray-600" id="sessionStatus">Work Time</p>
+
+        <!-- for skipping break -->
+        <button id="skipBreakBtn" onclick="skip()" class="hidden mt-4 px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition">
+          Skip Break
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- focus score -->
+  <div id="scorePanel" class="fixed top-4 right-4 z-50 hidden px-4 py-2 bg-purple-700 text-white text-lg rounded-full shadow-md">
+    🧠 Focus Score: <span id="focusPoints">100</span>/100
+  </div>
+
+  <!-- javascript -->
+  <script>
+    let tq = []         // all the things you said you'd do
+    let ts = 0           // where we at
+    let bm = false      // are we chilling
+    let cd              // tick tock
+    let rs = 0
+    let fs = localStorage.getItem("focusScore") ? +localStorage.getItem("focusScore") : 100
+
+    // punish for reloading like a quitter
+    window.addEventListener("beforeunload", () => {
+      fs = Math.max(fs - 2, 0)
+      localStorage.setItem("focusScore", fs)
+    })
+
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons() // make those little icons show up
+    })
+
+    function fea(id) {
+      return document.getElementById(id)
+    }
+
+    function lnch() {
+      fea("introWrap").classList.add("hidden")
+      fea("mainInterface").classList.remove("hidden")
+      lucide.createIcons()
+    }
+
+    function set_prp(pk) {
+      fea("purposeTracker").value = pk
+      const gr = {
+        student: "linear-gradient(to right, #a8e6cf, #dcedc1)",
+        office: "linear-gradient(to right, #74ebd5, #ACB6E5)",
+        entrepreneur: "linear-gradient(to right, #ffe29f, #ffa99f)",
+        default: "linear-gradient(to bottom right, #c4b5fd, #f3e8ff)"
+      }
+      fea("appRoot").style.backgroundImage = gr[pk] || gr.default
+      fea("categorySelection").classList.add("hidden")
+      fea("taskEditor").classList.remove("hidden")
+    }
+
+    function cap_1(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1)
+    }
+
+    function t2m(tx) {
+      tx = tx.toLowerCase().trim()
+      let m = 0
+      const h = tx.match(/(\d+(\.\d+)?)h/)
+      const mi = tx.match(/(\d+(\.\d+)?)m/)
+      if (h) m += parseFloat(h[1]) * 60
+      if (mi) m += parseFloat(mi[1])
+      return m
+    }
+
+    function go() {
+      const inp = fea("taskBlock").value.trim()
+      if (!inp) return alert("Please enter at least one task with a duration.")
+
+      tq = inp.split("\n").map(r => {
+        const [l, t] = r.split("-")
+        if (!l || !t) return null
+        const n = cap_1(l.trim())
+        const d = t2m(t)
+        return (!n || isNaN(d) || d <= 0) ? null : { n, d }
+      }).filter(Boolean)
+
+      if (!tq.length) return alert("Please follow the format: Task - Duration (e.g., Study - 2h, Sleep - 30m)")
+
+      fea("taskEditor").classList.add("hidden")
+      fea("activeSession").classList.remove("hidden")
+      fea("scorePanel").classList.remove("hidden")
+      fea("focusPoints").innerText = fs
+
+      nxt()
+      tick()
+    }
+
+    function nxt() {
+      if (ts >= tq.length) return done()
+      const i = tq[ts]
+      fea("taskNow").innerText = i.n
+      rs = i.d * 60
+      fea("sessionStatus").innerText = "Work Time"
+    }
+
+    function tick() {
+      cd = setInterval(() => {
+        const m = Math.floor(rs / 60)
+        const s = String(rs % 60).padStart(2, "0")
+        fea("clockDisplay").innerText = `${m}:${s}`
+        rs--
+        if (rs < 0) {
+          clearInterval(cd)
+          bm ? end() : brk()
+        }
+      }, 1000)
+    }
+
+    function brk() {
+      bm = true
+      const b = parseInt(fea("breakInput").value) || 5
+      rs = b * 60
+      fea("sessionStatus").innerText = "Break Time 🧘"
+      fea("skipBreakBtn").classList.remove("hidden")
+      tick()
+    }
+
+    function end() {
+      bm = false
+      ts++
+      fea("skipBreakBtn").classList.add("hidden")
+      ts < tq.length ? (nxt(), tick()) : done()
+    }
+
+    function skip() {
+      clearInterval(cd)
+      end()
+    }
+
+    function done() {
+      fea("taskNow").innerText = "🎉 All tasks completed!"
+      fea("clockDisplay").innerText = "--:--"
+      fea("sessionStatus").innerText = ""
+      fea("skipBreakBtn").classList.add("hidden")
+    }
+  </script>
+</body>
+</html>
