@@ -127,21 +127,20 @@
 
   <!-- javascript -->
   <script>
-    let tq = []         // all the things you said you'd do
-    let ts = 0           // where we at
-    let bm = false      // are we chilling
-    let cd              // tick tock
+    let tq = []
+    let ts = 0
+    let bm = false
+    let cd
     let rs = 0
     let fs = localStorage.getItem("focusScore") ? +localStorage.getItem("focusScore") : 100
 
-    // punish for reloading like a quitter
     window.addEventListener("beforeunload", () => {
       fs = Math.max(fs - 2, 0)
       localStorage.setItem("focusScore", fs)
     })
 
     document.addEventListener("DOMContentLoaded", () => {
-      lucide.createIcons() // make those little icons show up
+      lucide.createIcons()
     })
 
     function fea(id) {
@@ -236,6 +235,9 @@
 
     function end() {
       bm = false
+      fs = Math.min(fs + 2, 100) // reward for completing task
+      localStorage.setItem("focusScore", fs)
+      fea("focusPoints").innerText = fs
       ts++
       fea("skipBreakBtn").classList.add("hidden")
       ts < tq.length ? (nxt(), tick()) : done()
